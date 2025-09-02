@@ -1,141 +1,213 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>TP – Visualización de Traslados (Feb–Jul 2025)</title>
+  <title>Traslados Santa Rosa ↔ General Pico (Feb–Jul 2025)</title>
+
+  <!-- Tipografía -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+
   <style>
-    body{font-family: system-ui, Arial, sans-serif; margin:0; background:#0f172a; color:#e5e7eb;}
-    header{padding:32px 20px; background:#111827; border-bottom:1px solid #1f2937;}
-    .container{max-width:980px; margin:0 auto; padding:24px;}
-    h1{margin:0 0 4px; font-size:28px;}
-    h2{margin-top:40px; font-size:22px; color:#93c5fd;}
-    p.lead{color:#cbd5e1;}
-    section{margin-bottom:40px; padding-bottom:24px; border-bottom:1px dashed #374151;}
-    .note{font-size:14px; color:#94a3b8;}
-    .embed{width:100%; height:520px; border:0; border-radius:12px; background:#111827;}
-    a{color:#93c5fd;}
-    footer{padding:24px; text-align:center; color:#94a3b8;}
-    code{background:#1f2937; padding:2px 6px; border-radius:6px}
+    :root{
+      --bg:#0b1220; --card:#0f172a; --line:#1f2a44; --fg:#e6edf3; --muted:#9fb0c0;
+      --accent:#22d3ee; --accent-2:#6ee7b7; --shadow:0 10px 30px rgba(0,0,0,.35)
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 "Inter",system-ui,Arial}
+    a{color:#8be9fd;text-decoration:none} a:hover{text-decoration:underline}
+    header{
+      background: radial-gradient(1200px 400px at 20% -20%, rgba(34,211,238,.35), transparent),
+                  radial-gradient(900px 300px at 90% 10%, rgba(110,231,183,.25), transparent);
+      border-bottom:1px solid var(--line);
+    }
+    .wrap{max-width:1040px;margin:0 auto;padding:28px 20px}
+    .hero h1{margin:0 0 6px;font-weight:800;letter-spacing:.2px}
+    .hero p.lead{color:var(--muted);margin:8px 0 14px}
+    .badges{display:flex;flex-wrap:wrap;gap:8px}
+    .badge{font-size:12px;border:1px solid var(--line);padding:4px 10px;border-radius:999px;color:#cbd5e1;background:#0c1527}
+
+    main{padding:16px 20px}
+    .grid{max-width:1040px;margin:0 auto;display:grid;gap:20px}
+    .card{
+      background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 18px 20px;
+      box-shadow:var(--shadow)
+    }
+    h2{font-size:22px;margin:0 0 10px;color:#d7e3ff}
+    .q{font-weight:700;color:var(--accent);margin:0 0 10px}
+    .note{font-size:14px;color:#b2c0cf;margin-top:10px}
+    img,iframe{width:100%;border:0;border-radius:12px;background:#0b1220}
+
+    /* Navegación fija */
+    .nav{position:sticky;top:0;z-index:50;background:rgba(11,18,32,.7);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+    .nav ul{margin:0;padding:8px 0;display:flex;gap:14px;list-style:none;overflow:auto}
+    .nav a{white-space:nowrap;padding:6px 10px;border-radius:10px;border:1px solid transparent}
+    .nav a:hover{border-color:var(--line);background:#0c1527}
+
+    /* Botón volver arriba (opcional usarlo) */
+    .top{position:fixed;right:14px;bottom:14px;background:#0c1527;border:1px solid var(--line);
+         padding:10px 12px;border-radius:12px;box-shadow:var(--shadow)}
   </style>
 </head>
+
 <body>
+  <!-- HERO -->
   <header>
-    <div class="container">
+    <div class="wrap hero">
       <h1>Traslados Santa Rosa ↔ General Pico (Febrero–Julio 2025)</h1>
       <p class="lead">Exploración de mis viajes laborales: costos, tiempos y patrones por medio de transporte.</p>
+      <div class="badges">
+        <span class="badge">Datos personales</span>
+        <span class="badge">Periodo: Feb–Jul 2025</span>
+        <span class="badge">Ruta: La Pampa (AR)</span>
+        <span class="badge">RAWGraphs • Flourish • Tableau • Datawrapper</span>
+      </div>
     </div>
   </header>
 
- <section class="card" id="intro">
-  <h2>¿Qué analizo en este proyecto?</h2>
-  <p>
-    En este proyecto analizo mis <strong>viajes laborales entre Santa Rosa y General Pico</strong> en el periodo
-    <strong>febrero–julio de 2025</strong>. A través de distintas visualizaciones muestro:
-    qué medios de transporte utilicé, cómo varió su uso según el contexto, <em>cuál fue su costo por minuto</em>
-    y <em>qué distancia recorrí</em> con cada uno. El objetivo es reflejar mis patrones de movilidad laboral
-    y detectar posibles mejoras en <strong>tiempo</strong> y <strong>costos</strong>.
-  </p>
-</section>
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="wrap">
+      <ul>
+        <li><a href="#intro">Intro</a></li>
+        <li><a href="#v1">Frecuencia</a></li>
+        <li><a href="#v2">Contexto</a></li>
+        <li><a href="#v3">Tiempo promedio</a></li>
+        <li><a href="#v4">Costo por minuto</a></li>
+        <li><a href="#conclusiones">Conclusiones</a></li>
+        <li><a href="#metodologia">Metodología</a></li>
+      </ul>
+    </div>
+  </nav>
 
+  <!-- MAIN -->
+  <main>
+    <div class="grid wrap">
 
-    <section id="v1">
-      <h2>¿Qué medio de transporte uso más entre Santa Rosa y Pico?</h2>
-      <img class="embed" src="tp_infovis_assets/Uso_por_medio.png" alt="Uso por medio (RAWGraphs)">
-      <p class="note"><a href="tp_infovis_assets/uso_por_medio.csv">Descargar CSV</a></p>
-    </section>
+      <!-- INTRO -->
+      <section class="card" id="intro">
+        <h2>¿Qué analizo en este proyecto?</h2>
+        <p>
+          En este proyecto analizo mis <strong>viajes laborales entre Santa Rosa y General Pico</strong> en el periodo
+          <strong>febrero–julio de 2025</strong>. A través de distintas visualizaciones muestro:
+          qué medios de transporte utilicé, cómo varió su uso según el contexto, <em>cuál fue su costo por minuto</em>
+          y <em>qué distancia recorrí</em> con cada uno. El objetivo es reflejar mis patrones de movilidad laboral
+          y detectar posibles mejoras en <strong>tiempo</strong> y <strong>costos</strong>.
+        </p>
+      </section>
 
-    <section id="v2">
-      <h2>¿Cuánto gasto en transporte por mes?</h2>
-      <div class="flourish-embed flourish-chart" data-src="visualisation/24878441">
-        <script src="https://public.flourish.studio/resources/embed.js"></script>
-        <noscript>
-          <img src="https://public.flourish.studio/visualisation/24878441/thumbnail" width="100%" alt="chart visualization" />
-        </noscript>
-      </div>
-    </section>
+      <!-- V1 -->
+      <section class="card" id="v1">
+        <div class="q">¿Qué medio de transporte uso más entre Santa Rosa y Pico?</div>
+        <img class="embed" src="tp_infovis_assets/Uso_por_medio.png" alt="Uso por medio (RAWGraphs)">
+        <p class="note"><a href="tp_infovis_assets/uso_por_medio.csv">Descargar CSV</a></p>
+      </section>
 
-    <section id="v3">
-      <iframe title="¿Cuál es el tiempo promedio por medio de transporte?" aria-label="Bar Chart"
-              id="datawrapper-chart-eHBk9"
-              src="https://datawrapper.dwcdn.net/eHBk9/1/"
-              scrolling="no" frameborder="0"
-              style="width: 0; min-width: 100% !important; border: none;"
-              height="400" data-external="1" loading="lazy"></iframe>
-      <script type="text/javascript">
-        !function(){
-          "use strict";
+      <!-- V2 -->
+      <section class="card" id="v2">
+        <div class="q">¿Cómo varía mi uso del transporte según el contexto laboral?</div>
+        <div class="flourish-embed flourish-chart" data-src="visualisation/24878441">
+          <script src="https://public.flourish.studio/resources/embed.js"></script>
+          <noscript>
+            <img src="https://public.flourish.studio/visualisation/24878441/thumbnail" width="100%" alt="chart visualization" />
+          </noscript>
+        </div>
+      </section>
+
+      <!-- V3 -->
+      <section class="card" id="v3">
+        <div class="q">¿Cuál es el tiempo promedio por medio de transporte?</div>
+        <iframe title="¿Cuál es el tiempo promedio por medio de transporte?" aria-label="Bar Chart"
+                id="datawrapper-chart-eHBk9"
+                src="https://datawrapper.dwcdn.net/eHBk9/1/"
+                scrolling="no" frameborder="0"
+                style="width:0;min-width:100%!important;border:none" height="420" loading="lazy"></iframe>
+        <script>
           window.addEventListener("message",function(a){
-            if(void 0!==a.data["datawrapper-height"]){
-              var e=document.querySelectorAll("iframe");
-              for(var t in a.data["datawrapper-height"])
-                for(var r,i=0;r=e[i];i++)
-                  if(r.contentWindow===a.source){
-                    var d=a.data["datawrapper-height"][t]+"px";
-                    r.style.height=d;
-                  }
+            if(a.data["datawrapper-height"]){
+              const ifr=document.getElementById("datawrapper-chart-eHBk9");
+              const h=a.data["datawrapper-height"][Object.keys(a.data["datawrapper-height"])[0]];
+              if(h) ifr.style.height=h+"px";
             }
           });
-        }();
-      </script>
-      <p class="note"><a href="tp_infovis_assets/tiempo_promedio_por_medio.csv">Descargar CSV</a></p>
-    </section>
+        </script>
+        <p class="note"><a href="tp_infovis_assets/tiempo_promedio_por_medio.csv">Descargar CSV</a></p>
+      </section>
 
-    <section id="v4">
-      <h2>¿Qué medio es más eficiente en costo por minuto?</h2>
+      <!-- V4 -->
+      <section class="card" id="v4">
+        <div class="q">¿Qué medio es más eficiente en costo por minuto?</div>
 
-      <div class="tableauPlaceholder" id="viz1756417365101" style="position: relative">
-        <noscript>
-          <a href="#">
-            <img alt="¿Qué medio es más eficiente en costo por minuto?"
+        <div class="tableauPlaceholder" id="viz1756417365101" style="position: relative">
+          <noscript>
+            <a href="#"><img alt="¿Qué medio es más eficiente en costo por minuto?"
                  src="https://public.tableau.com/static/images/Co/Costoporminutopormediodetransporte/Hoja1/1.png"
-                 style="border: none"/>
-          </a>
-        </noscript>
-        <object class="tableauViz" style="display:none;">
-          <param name="host_url" value="https%3A%2F%2Fpublic.tableau.com%2F"/>
-          <param name="embed_code_version" value="3"/>
-          <param name="site_root" value=""/>
-          <param name="name" value="Costoporminutopormediodetransporte/Hoja1"/>
-          <param name="tabs" value="no"/>
-          <param name="toolbar" value="yes"/>
-          <param name="static_image" value="https://public.tableau.com/static/images/Co/Costoporminutopormediodetransporte/Hoja1/1.png"/>
-          <param name="animate_transition" value="yes"/>
-          <param name="display_static_image" value="yes"/>
-          <param name="display_spinner" value="yes"/>
-          <param name="display_overlay" value="yes"/>
-          <param name="display_count" value="yes"/>
-          <param name="language" value="es-ES"/>
-        </object>
-      </div>
+                 style="border:none"/></a>
+          </noscript>
+          <object class="tableauViz" style="display:none;">
+            <param name="host_url" value="https%3A%2F%2Fpublic.tableau.com%2F"/>
+            <param name="embed_code_version" value="3"/>
+            <param name="site_root" value=""/>
+            <param name="name" value="Costoporminutopormediodetransporte/Hoja1"/>
+            <param name="tabs" value="no"/>
+            <param name="toolbar" value="yes"/>
+            <param name="static_image" value="https://public.tableau.com/static/images/Co/Costoporminutopormediodetransporte/Hoja1/1.png"/>
+            <param name="animate_transition" value="yes"/>
+            <param name="display_static_image" value="yes"/>
+            <param name="display_spinner" value="yes"/>
+            <param name="display_overlay" value="yes"/>
+            <param name="display_count" value="yes"/>
+            <param name="language" value="es-ES"/>
+          </object>
+        </div>
+        <script>
+          var divElement = document.getElementById('viz1756417365101');
+          var vizElement = divElement.getElementsByTagName('object')[0];
+          vizElement.style.width = '100%';
+          vizElement.style.height = (divElement.offsetWidth * 0.75) + 'px';
+          var scriptElement = document.createElement('script');
+          scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';
+          vizElement.parentNode.insertBefore(scriptElement, vizElement);
+        </script>
 
-      <script type="text/javascript">
-        var divElement = document.getElementById('viz1756417365101');
-        var vizElement = divElement.getElementsByTagName('object')[0];
-        vizElement.style.width = '100%';
-        vizElement.style.height = (divElement.offsetWidth * 0.75) + 'px';
-        var scriptElement = document.createElement('script');
-        scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';
-        vizElement.parentNode.insertBefore(scriptElement, vizElement);
-      </script>
-      <p class="note"><a href="tp_infovis_assets/costo_por_minuto_por_medio.csv">Descargar CSV</a></p>
-    </section>
-<section class="card" id="conclusiones">
-  <h2>Conclusiones clave</h2>
-  <ul>
-    <li><strong>Frecuencia:</strong> Un medio predomina en los traslados Santa Rosa ↔ General Pico, lo que muestra una preferencia clara.</li>
-    <li><strong>Contexto:</strong> El uso varía según reuniones presenciales y carga de trabajo. Anticipar horarios ayuda a reducir tiempos muertos.</li>
-    <li><strong>Costo por minuto:</strong> Hay diferencias importantes entre medios; priorizar los más eficientes en jornadas largas mejora productividad.</li>
-    <li><strong>Distancia total:</strong> La mayor parte de los kilómetros se concentra en un medio, lo que implica atención especial al mantenimiento y consumo.</li>
-  </ul>
-  <p class="note">Próximo paso: evaluar combinaciones de medios por franja horaria y estimar el ahorro potencial de tiempo y costo en los próximos meses.</p>
-</section> 
-</main>
+        <p class="note"><a href="tp_infovis_assets/costo_por_minuto_por_medio.csv">Descargar CSV</a></p>
+      </section>
+
+      <!-- Conclusiones -->
+      <section class="card" id="conclusiones">
+        <h2>Conclusiones clave</h2>
+        <ul>
+          <li><strong>Frecuencia:</strong> Un medio predomina en los traslados Santa Rosa ↔ General Pico, lo que muestra una preferencia clara.</li>
+          <li><strong>Contexto:</strong> El uso varía según reuniones presenciales y carga de trabajo. Anticipar horarios ayuda a reducir tiempos muertos.</li>
+          <li><strong>Costo por minuto:</strong> Hay diferencias importantes entre medios; priorizar los más eficientes en jornadas largas mejora productividad.</li>
+          <li><strong>Distancia total:</strong> La mayor parte de los kilómetros se concentra en un medio, lo que implica atención especial al mantenimiento y consumo.</li>
+        </ul>
+        <p class="note">Próximo paso: evaluar combinaciones de medios por franja horaria y estimar el ahorro potencial de tiempo y costo en los próximos meses.</p>
+      </section>
+
+      <!-- Metodología -->
+      <section class="card" id="metodologia">
+        <h2>Metodología</h2>
+        <ul>
+          <li><strong>Periodo:</strong> 1 feb – 31 jul 2025</li>
+          <li><strong>Registro:</strong> viajes laborales Santa Rosa ↔ General Pico</li>
+          <li><strong>Variables:</strong> medio, duración, costo/min, distancia</li>
+          <li><strong>Herramientas:</strong> RAWGraphs, Flourish, Tableau, Datawrapper</li>
+          <li><strong>Limitaciones:</strong> estimaciones sujetas a clima y estado de ruta</li>
+        </ul>
+      </section>
+
+    </div>
+  </main>
 
   <footer>
-    <p>Autor: Leonardo Vargas · Infovis 2025</p>
+    <div class="wrap" style="color:#9fb0c0;padding:24px 0;border-top:1px solid var(--line)">
+      TP Visualización de Datos Personales — Leonardo Vargas — 2025 ·
+      <a href="https://github.com/Leovargas2025/infovis">Repositorio</a>
+    </div>
   </footer>
 </body>
 </html>
-
-
